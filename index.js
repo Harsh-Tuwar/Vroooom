@@ -11,7 +11,7 @@ const peerServer = ExpressPeerServer(server, {
 	debug: true
 });
 
-const PORT = process.env.PORT || 3030;
+const PORT = process.env.PORT || 5000;
 
 // set up engine
 app.set('view engine', 'ejs');
@@ -40,6 +40,10 @@ io.on('connection', socket => {
 		//send message to the same room
 		io.to(roomID).emit('appendMsg', message);
 	});
+
+	socket.on('disconnect', (roomID, userID) => {
+      socket.to(roomID).broadcast.emit('user-disconnected', userID)
+    })
 })
 
 		
