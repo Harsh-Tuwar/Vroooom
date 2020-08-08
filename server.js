@@ -33,7 +33,14 @@ io.on('connection', socket => {
 	socket.on('join-room', (roomID, userID) => {
 		socket.join(roomID);
 		socket.to(roomID).broadcast.emit('user-connected', userID);
-	})
-});
+	});
 
+	// messages
+	socket.on('sendMessage', (message, roomID) => {
+		//send message to the same room
+		io.to(roomID).emit('appendMsg', message);
+	});
+})
+
+		
 server.listen(PORT, console.log(`Server is running on http//localhost:${PORT}`.blue.bold));
